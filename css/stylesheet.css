@@ -1,13 +1,79 @@
-
-
-button {
-  background-color: bisque;
+/* General CSS */
+body {
+  background-color: rgb(142,202,230);
 }
 
+button {
+  border: 1px solid rgba(47,47,47,1);
+  border-radius: 4px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 2em;
+  height: 50px;
+  margin: 2px;
+  width: 50px;
+}
+
+h1 {
+  display: flex;
+  font-family: 'Courier New', Courier, monospace;
+  justify-content: center;
+}
+
+/* Button colors */
+.backspace,
+.clear {
+  background-color: rgb(33, 158, 188);
+}
+
+.equals {
+  background-color: rgb(255, 183, 3);
+}
+
+.value { 
+  background-color: rgb(2,48,71);
+  color: white;
+}
+
+.operator {
+  background-color: rgb(251,133,0);
+}
+
+/* Calculator container */
+.calculator-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* Calculator display */
 .calculator-display {
-  border-style: inset;
-  border-width: 1px;
-  border-color: black;
-  height: 20px;
-  width: 75px;
+  align-content: flex-end;
+  background-color: white;
+  border-radius: 4px;
+  border: inset 3px black;
+  display: flex;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 2.5em;
+  height: 40px;
+  justify-content: flex-end;
+  width: 217px;
+}
+
+/* Calculator rows */
+.calculator-row-1, 
+.calculator-row-2,
+.calculator-row-3,
+.calculator-row-4,
+.calculator-row-5
+{
+  align-items: center;
+  background-color: white;
+  border: 0px 1px; 
+  border-style: solid rgba(47,47,47,1);
+  border-radius: 1px;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 1px;
+  width: 215px;
 }
