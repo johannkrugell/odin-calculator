@@ -1,41 +1,14 @@
 // declare variables  
-// value1 and value2 are used to store the button values before the user 
-// press equals
-let value1 = "";
+let value1 = ""; // stores numberValues based on checkOperator() assignment
 let value2 = "";
-// interimresult is used to store the result of the calculation performed on 
-// value1 and value2 before the user press equals. For example 1 + 1 - 1 the
-// addition of 1+1 is stored in the interimResult before 1 is deducted
-let interimResult = "";
-// string variable to store the value clicked on the calulator key pad
-let numberValue = "";
+let interimResult = ""; // stores calculation result before equals is clicked
+let numberValue = ""; // number value clicked on the calulator key pad
+
 // set default display value of the calculator is zero
 document.getElementsByClassName("calculator-display")[0].innerText = 0;
 
-// eventlisteners added to the value buttons
-// If there is an interim result and not value1/2 then the user has clicked = 
-// in previous step and the value clicked now should be assigned to value1/2. 
-// In all other cases the user is just keying in the number and only the display
-// is updated
-const numbers = document.querySelectorAll(".number");
-for (var i = 0; i < numbers.length; i++) { 
-  numbers[i].addEventListener( 'click', function()
-  {numbersClicked(this.innerText)})
-}
-
-function numbersClicked (value) {
-  if (value1 === "" && value2 === "" && interimResult !== "") {
-    numberValue = value;
-    updateDisplay(numberValue);
-    checkOperator(numberValue);
-  }
-  else {
-    numberValue = value
-    updateDisplay(numberValue); // update the value display on calculator  
-  }
-}
-
-// keyboard support for numberic value
+// Event Listeners 
+// Keyboard support 
 document.addEventListener( 'keydown', function(event) {
   if (event.key >= 0 && event.key <= 9) {
     numbersClicked(event.key);
@@ -53,15 +26,28 @@ document.addEventListener( 'keydown', function(event) {
   else if (event.key === "c" || event.key === "C") {
     clearAll();
   }
-
 })
 
-// eventlistener for the operator button
-// entering the operator determines to which variable the button values are 
-// assigned. If the operator array length is 1 then the numbers should be
-// assigned to value1 and the running display updated. If the operator length
-// is more than one then the values should be stored in value2 and a calculation 
-// performed
+// Numbers UI
+const numbers = document.querySelectorAll(".number");
+for (var i = 0; i < numbers.length; i++) { 
+  numbers[i].addEventListener( 'click', function()
+  {numbersClicked(this.innerText)})
+}
+
+function numbersClicked (value) {
+  if (value1 === "" && value2 === "" && interimResult !== "") {
+    numberValue = value;
+    updateDisplay(numberValue); // assigns numberValue to value1 / value2
+    checkOperator(numberValue); // update the display on calculator
+  }
+  else {
+    numberValue = value
+    updateDisplay(numberValue); // update the display on calculator  
+  }
+}
+
+// Operator UI
 const operators = document.querySelectorAll(".operator");
 const operatorValue = [];
 
@@ -83,7 +69,7 @@ function operatorClicked(value) {
     }
 }
 
-// eventlistener for the equals operator
+// Equals UI
 const equal = document.querySelectorAll(".equals");
 
 for ( var i = 0; i < equal.length; i++) { 
@@ -94,11 +80,11 @@ function equalsClicked() {
   if (numberValue !== value2.toString()) {
     checkOperator(numberValue);
   }
-  calculation(value1,value2); // perform calculation
-  numberValue = "";
+    calculation(value1,value2); // perform calculation
+    numberValue = "";
 }
 
-// eventlistener for the clear all button
+// Clear all UI
 const allClear = document.querySelectorAll(".clear");
 // clears all the variable values and set the calculator display to 0
 for ( i = 0; i < allClear.length; i++) { 
@@ -115,8 +101,7 @@ function clearAll() {
   document.getElementsByClassName("calculator-display")[0].innerText = "0"
 }
 
-
-// eventlister for the backspace button
+// Backspace UI
 const clearLast = document.querySelectorAll(".backspace");
 
 for ( i = 0; i < clearLast.length; i++ ) {
@@ -126,7 +111,7 @@ for ( i = 0; i < clearLast.length; i++ ) {
 function backspace() {
   if ( operatorValue.length === 1 && value2 === "") {
     operatorValue.pop(); // if an operator has been clicked the backspace
-                              // removes the operator
+                         // removes the operator
     document.getElementsByClassName("calculator-display")[0].innerText = 
     value1.toString().replace(/,/g,"");
   } else {
@@ -140,9 +125,9 @@ function backspace() {
 // declare an array to store number values the user have clicked
 const calculationArray = [];
 
-// push value clicked onto array that is displaye on the calculator
+// push value clicked onto array that is displayed on the calculator
 function updateDisplay(numberValue) {
-  calculationArray.push(numberValue); // push button value clicked on array
+  calculationArray.push(numberValue); 
   let calculatorDisplay = calculationArray.toString().replace(/,/g,"");
   document.getElementsByClassName("calculator-display")[0].innerText 
   = calculatorDisplay;
@@ -151,8 +136,7 @@ function updateDisplay(numberValue) {
   }
 } 
 
-// function to store number value click in either value1 or value2
-// after storing the value the array with numbers is cleared to store new values
+// Store number value click in either value1 or value2
 function checkOperator(){
   if (operatorValue.length === 1 && value1 === "" && interimResult === "") {
     value1 = parseInt(calculationArray.toString().replace(/,/g,""));
