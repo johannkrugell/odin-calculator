@@ -1,0 +1,23 @@
+{
+  "name": "odin-calculator",
+  "version": "1.0.0",
+  "description": "This files desribes the basic working of the calculator",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha || true"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johannkrugell/odin-calculator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johannkrugell/odin-calculator/issues"
+  },
+  "homepage": "https://github.com/johannkrugell/odin-calculator#readme"
+}

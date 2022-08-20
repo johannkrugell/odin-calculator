@@ -2,6 +2,8 @@
 let value1 = ""; // stores numberValues based on storeValue() assignment
 let value2 = "";
 let numberValue = ""; // number value clicked on the calulator key pad
+let numberOfOperators = 0;
+let interimResultBeforeCalc = 0;
 const interimResult = []; // stores the interim calculation result
 const operatorList = ["+","-","*","/","%"]; // to remove operators when backspace
 const calculationDisplay = [];
@@ -23,8 +25,10 @@ document.addEventListener( 'keydown', function(event) {
     // do nothing
   } else if (event.code === "Space"){
     // do nothing 
+  }  else if (event.key === "Backspace" && document.querySelector(".backspace").disabled === true){
+    // do nothing
   } else if (event.key === "Backspace"){
-    backspace();
+    backspace();  
   } else if (event.key === "c" || event.key === "C") {
     clearAll();
   } else if (event.key === ".") {
@@ -44,13 +48,16 @@ function numbersClicked(value) {
   pushArray(calculationArray, numberValue);
   pushArray(calculationDisplay, numberValue);
   refreshCalculationDisplay();
-  if (interimResult.length <= 1) {
+  if (interimResult.length < 1) {
     calculation(value1,parseFloat(toString(calculationArray)));
-  } else if (interimResult.length > 1) {
-    calculation(interimResult[interimResult.length-1],
+  } else if (interimResult.length > 1 && numberOfOperators === 1) {
+    calculation(interimResult[operatorValue.length-1],
     parseFloat(toString(calculationArray)));
+  } else if (interimResult.length > 1 && numberOfOperators > 1) {
+    calculation(interimResult[interimResultBeforeCalc],
+    parseFloat(toString(calculationArray))); 
   } else if (interimResult.length === 1) {
-    calculation(interimResult,parseFloat(toString(calculationArray)));
+    calculation(parseFloat(interimResult.toString()),parseFloat(toString(calculationArray)));
   }
 }
 
@@ -78,22 +85,33 @@ for (var i = 0; i < operators.length; i++) {
 }
 
 function operatorClicked(value) {
+  numberOfOperators ++;
+  interimResultBeforeCalc = interimResult.length-1;
   pushArray(operatorValue,value);
+  //document.querySelector("backspace").removeAttribute("disabled");
   document.querySelector(".decimal").removeAttribute("disabled"); // enable decimal
-  if (operatorValue[operatorValue.length-1] === "Enter" || 
-      operatorValue[operatorValue.length-1] === "=") {
+  //document.querySelector(".backspace").removeAttribute("disabled",''); // enable backspace
+  if (operatorValue.length === 1 && operatorValue[0] === "Enter" || 
+             operatorValue[operatorValue.length-1] === "=") {
+    clearArray(operatorValue,0,operatorValue.length);
+    document.querySelector(".backspace").setAttribute("disabled",'');
+  } else if (operatorValue[operatorValue.length-1] === "Enter" || 
+             operatorValue[operatorValue.length-1] === "=") {
     styleCalculationDisplay();
     clearArray(calculationDisplay, 0, calculationDisplay.length);
     clearArray(operatorValue, 0, operatorValue.length);
     clearArray(calculationArray, 0, calculationArray.length);
     pushArray(interimResult, interimResult[interimResult.length-1]);
+    document.querySelector(".backspace").setAttribute("disabled",'');
   } else if (operatorValue.length >= 1 && value1 !== "") {
+    document.querySelector(".backspace").removeAttribute("disabled",'');
     styleDisplay();
     clearArray(operatorValue, 0, operatorValue.length-1);
     clearArray(calculationArray, 0, calculationArray.length);
     pushArray(calculationDisplay, value);
     refreshCalculationDisplay();
   } else {
+    document.querySelector(".backspace").removeAttribute("disabled",'');
     storeValue(operatorValue); 
     pushArray(calculationDisplay, value);
     refreshCalculationDisplay();
@@ -122,11 +140,14 @@ function clearAll() {
   value1 = "";
   value2 = "";
   numberValue = "";
+  numberOfOperators = 0;
   clearArray(calculationArray, 0, calculationArray.length);
   clearArray(calculationDisplay, 0, calculationDisplay.length);
   clearArray(interimResult, 0, interimResult.length);
   clearArray(operatorValue, 0, operatorValue.length);
   blankCalculationDisplay();
+  document.querySelector(".decimal").removeAttribute("disabled"); // enable decimal
+  document.querySelector(".backspace").removeAttribute("disabled",''); // enable backspace
 }
 
 // Backspace UI
@@ -178,6 +199,7 @@ function updateDisplay(value) {
 function storeValue() {
   if (operatorValue.length === 1 ) {
     value1 = parseFloat(calculationArray.toString().replace(/,/g,""));
+    pushArray(interimResult,value1);
     clearArray(calculationArray, 0, calculationArray.length);
   } else {
     value2 = parseInt(calculationArray.toString().replace(/,/g,""));
