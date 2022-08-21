@@ -182,6 +182,7 @@ function backspace() {
     refreshCalculationDisplay();
     if (interimResult.length === 0){
       updateDisplay("");
+      clearAll();
     } else {
       updateDisplay(interimResult[interimResult.length-1]);
     }  
