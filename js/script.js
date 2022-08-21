@@ -160,11 +160,13 @@ for ( i = 0; i < clearLast.length; i++ ) {
 function backspace() {
   if (operatorList.indexOf(calculationDisplay[calculationDisplay.length-1]) !== -1) {
     popArray(operatorValue);
+    numberOfOperators = numberOfOperators - 1;
     popArray(calculationArray);
     popArray(calculationDisplay);                
     refreshCalculationDisplay(); 
     if (interimResult.length === 0){
       updateDisplay("");
+      clearAll();
     } else {
       updateDisplay(interimResult[interimResult.length-1]);
     } 
